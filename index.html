@@ -307,6 +307,122 @@
         &copy; 2026 SPPG KOTA SERANG SERANG SERANG 2. All Rights Reserved.
     </footer>
 
+    <!-- MODAL EDIT DATA (KHUSUS ADMIN) -->
+    <div id="editModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 relative shadow-2xl border border-sky-100 my-8">
+            <button onclick="closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-bold text-slate-900 text-lg mb-1">Edit Laporan Sisa Pangan</h3>
+            <p class="text-xs text-slate-500 mb-4">Ubah berat, keterangan, hapus foto lama, atau tambahkan foto baru.</p>
+
+            <form id="editForm" onsubmit="submitEditReport(event)" class="space-y-4">
+                <input type="hidden" id="editDocId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tanggal Pendataan</label>
+                    <input type="date" id="editTanggal" required class="w-full sm:w-1/2 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-biruAsinDark">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[50vh] overflow-y-auto pr-1">
+                    <!-- Karbohidrat Edit -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <h4 class="text-xs font-bold text-slate-700 flex items-center space-x-1.5"><i class="fa-solid fa-wheat-awn text-amber-500"></i><span>Karbohidrat</span></h4>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Berat (Kg)</label>
+                            <input type="number" step="0.01" id="editKarboKg" oninput="calculateEditTotal()" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Keterangan</label>
+                            <input type="text" id="editKarboKet" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Foto Saat Ini (Centang untuk Hapus)</label>
+                            <div id="editKarboCurrentPhotos" class="flex flex-wrap gap-2 mb-2"></div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Tambah Foto Baru</label>
+                            <input type="file" id="editKarboFoto" multiple accept="image/*" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:font-semibold file:bg-sky-100 file:text-biruAsinDark">
+                        </div>
+                    </div>
+
+                    <!-- Protein Edit -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <h4 class="text-xs font-bold text-slate-700 flex items-center space-x-1.5"><i class="fa-solid fa-drumstick-bite text-rose-500"></i><span>Protein</span></h4>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Berat (Kg)</label>
+                            <input type="number" step="0.01" id="editProteinKg" oninput="calculateEditTotal()" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Keterangan</label>
+                            <input type="text" id="editProteinKet" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Foto Saat Ini (Centang untuk Hapus)</label>
+                            <div id="editProteinCurrentPhotos" class="flex flex-wrap gap-2 mb-2"></div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Tambah Foto Baru</label>
+                            <input type="file" id="editProteinFoto" multiple accept="image/*" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:font-semibold file:bg-sky-100 file:text-biruAsinDark">
+                        </div>
+                    </div>
+
+                    <!-- Sayur Edit -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <h4 class="text-xs font-bold text-slate-700 flex items-center space-x-1.5"><i class="fa-solid fa-carrot text-emerald-500"></i><span>Sayur</span></h4>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Berat (Kg)</label>
+                            <input type="number" step="0.01" id="editSayurKg" oninput="calculateEditTotal()" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Keterangan</label>
+                            <input type="text" id="editSayurKet" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Foto Saat Ini (Centang untuk Hapus)</label>
+                            <div id="editSayurCurrentPhotos" class="flex flex-wrap gap-2 mb-2"></div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Tambah Foto Baru</label>
+                            <input type="file" id="editSayurFoto" multiple accept="image/*" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:font-semibold file:bg-sky-100 file:text-biruAsinDark">
+                        </div>
+                    </div>
+
+                    <!-- Buah Edit -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <h4 class="text-xs font-bold text-slate-700 flex items-center space-x-1.5"><i class="fa-solid fa-apple-whole text-orange-500"></i><span>Buah</span></h4>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Berat (Kg)</label>
+                            <input type="number" step="0.01" id="editBuahKg" oninput="calculateEditTotal()" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Keterangan</label>
+                            <input type="text" id="editBuahKet" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-biruAsinDark focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Foto Saat Ini (Centang untuk Hapus)</label>
+                            <div id="editBuahCurrentPhotos" class="flex flex-wrap gap-2 mb-2"></div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 mb-0.5">Tambah Foto Baru</label>
+                            <input type="file" id="editBuahFoto" multiple accept="image/*" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:font-semibold file:bg-sky-100 file:text-biruAsinDark">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Edit -->
+                <div class="bg-biruTelurAsin/50 p-3 rounded-xl flex items-center justify-between border border-sky-200">
+                    <span class="font-bold text-slate-700 text-xs">Total Keseluruhan (Kg):</span>
+                    <input type="text" id="editTotalKg" readonly value="0.00" class="bg-transparent font-extrabold text-sm text-biruAsinDark w-32 text-right focus:outline-none">
+                </div>
+
+                <div class="flex space-x-2 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="w-1/2 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold rounded-xl transition">Batal</button>
+                    <button type="submit" id="editSubmitBtn" class="w-1/2 py-2.5 bg-biruAsinDark hover:bg-biruAsinHover text-white text-xs font-semibold rounded-xl shadow transition">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- MODAL PREVIEW FOTO JELAS -->
     <div id="photoModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-4 relative flex flex-col items-center">
@@ -499,6 +615,14 @@
             document.getElementById('totalKg').value = (k + p + s + b).toFixed(2) + " Kg";
         }
 
+        window.calculateEditTotal = function() {
+            const k = parseFloat(document.getElementById('editKarboKg').value) || 0;
+            const p = parseFloat(document.getElementById('editProteinKg').value) || 0;
+            const s = parseFloat(document.getElementById('editSayurKg').value) || 0;
+            const b = parseFloat(document.getElementById('editBuahKg').value) || 0;
+            document.getElementById('editTotalKg').value = (k + p + s + b).toFixed(2) + " Kg";
+        }
+
         function getIndonesianDateName(dateString) {
             const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             const d = new Date(dateString);
@@ -565,7 +689,6 @@
                 });
                 const resJson = await response.json();
                 if (resJson.status === "success") {
-                    // Ambil dokumen terbaru dari Firebase, lalu update fileId dan fileUrl dari Google Drive
                     const docRef = doc(db, "sisa_makanan", docId);
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
@@ -590,7 +713,6 @@
                 const compressed = await compressImage(files[i], 800, 800, 0.6);
                 if (!compressed) continue;
 
-                // Struktur objek foto dengan menyertakan slot fileId kosong untuk diisi setelah sync Drive selesai
                 photosArray.push({
                     fileId: "",
                     fileUrl: "",
@@ -598,7 +720,6 @@
                     data: compressed.dataUrl
                 });
 
-                // Jalankan sinkronisasi upload ke Google Drive di latar belakang (background)
                 syncPhotoToDrive(docId, categoryName, i, compressed.base64, compressed.name, dateStr);
             }
             return photosArray;
@@ -633,7 +754,6 @@
             try {
                 const tgl = document.getElementById('inputTanggal').value;
                 
-                // Buat kerangka data awal dengan gambar lokal (supaya instan masuk arsip)
                 const reportData = {
                     tanggal: tgl,
                     uploader: currentUser.name,
@@ -646,17 +766,14 @@
                     createdAt: new Date().toISOString()
                 };
 
-                // Simpan instan ke Firebase Firestore
                 const docRef = await addDoc(collection(db, "sisa_makanan"), reportData);
                 const newDocId = docRef.id;
 
-                // Proses kompresi ringan dan jalankan background sync untuk foto
                 const karboPhotos = await processCategoryFiles('karboFoto', 'karbo', tgl, newDocId);
                 const proteinPhotos = await processCategoryFiles('proteinFoto', 'protein', tgl, newDocId);
                 const sayurPhotos = await processCategoryFiles('sayurFoto', 'sayur', tgl, newDocId);
                 const buahPhotos = await processCategoryFiles('buahFoto', 'buah', tgl, newDocId);
 
-                // Update dokumen dengan array foto lokal agar langsung tampil
                 if (karboPhotos.length || proteinPhotos.length || sayurPhotos.length || buahPhotos.length) {
                     await updateDoc(doc(db, "sisa_makanan", newDocId), {
                         "karbo.fotos": karboPhotos,
@@ -666,7 +783,6 @@
                     });
                 }
 
-                // Kirim notifikasi WhatsApp via Fonnte di latar belakang
                 const waMessage = `*LAPORAN PENDATAAN SISA PANGAN PERSIAPAN PRODUKSI*\n\nTanggal: ${reportData.tanggal}\nOleh: ${currentUser.name}\nTotal: ${reportData.totalKg}\n\nData berhasil disimpan.`;
                 fetch('https://api.fonnte.com/send', {
                     method: 'POST',
@@ -781,8 +897,9 @@
             tr.className = "hover:bg-slate-50/80 transition";
             
             let actionTd = currentUser.role === 'admin' ? `
-                <td class="p-3 text-center action-col">
-                    <button onclick="deleteRecord('${record.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 px-2.5 py-1.5 rounded-lg text-xs font-medium transition" title="Hapus Laporan"><i class="fa-solid fa-trash"></i></button>
+                <td class="p-3 text-center action-col space-x-1 whitespace-nowrap">
+                    <button onclick="openEditModal('${record.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-700 px-2 py-1.5 rounded-lg text-xs font-medium transition" title="Edit Laporan"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button onclick="deleteRecord('${record.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 px-2 py-1.5 rounded-lg text-xs font-medium transition" title="Hapus Laporan"><i class="fa-solid fa-trash"></i></button>
                 </td>
             ` : `<td class="p-3 text-center action-col" style="display:none;"></td>`;
 
@@ -797,6 +914,144 @@
                 ${actionTd}
             `;
             return tr;
+        }
+
+        /* FUNGSI MODAL EDIT DENGAN PENGELOLAAN FOTO */
+        window.openEditModal = async function(id) {
+            try {
+                const docRef = doc(db, "sisa_makanan", id);
+                const docSnap = await getDoc(docRef);
+                if (!docSnap.exists()) {
+                    showModalAlert('Gagal', 'Data laporan tidak ditemukan.', 'error');
+                    return;
+                }
+                const data = docSnap.data();
+
+                document.getElementById('editDocId').value = id;
+                document.getElementById('editTanggal').value = data.tanggal || '';
+                
+                document.getElementById('editKarboKg').value = data.karbo?.kg || '';
+                document.getElementById('editKarboKet').value = data.karbo?.ket || '';
+                document.getElementById('editKarboFoto').value = '';
+                renderEditPhotos('editKarboCurrentPhotos', data.karbo?.fotos || [], 'karbo');
+
+                document.getElementById('editProteinKg').value = data.protein?.kg || '';
+                document.getElementById('editProteinKet').value = data.protein?.ket || '';
+                document.getElementById('editProteinFoto').value = '';
+                renderEditPhotos('editProteinCurrentPhotos', data.protein?.fotos || [], 'protein');
+
+                document.getElementById('editSayurKg').value = data.sayur?.kg || '';
+                document.getElementById('editSayurKet').value = data.sayur?.ket || '';
+                document.getElementById('editSayurFoto').value = '';
+                renderEditPhotos('editSayurCurrentPhotos', data.sayur?.fotos || [], 'sayur');
+
+                document.getElementById('editBuahKg').value = data.buah?.kg || '';
+                document.getElementById('editBuahKet').value = data.buah?.ket || '';
+                document.getElementById('editBuahFoto').value = '';
+                renderEditPhotos('editBuahCurrentPhotos', data.buah?.fotos || [], 'buah');
+
+                document.getElementById('editTotalKg').value = data.totalKg || '0.00 Kg';
+
+                document.getElementById('editModal').classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                showModalAlert('Gagal', 'Gagal memuat data untuk diedit.', 'error');
+            }
+        }
+
+        function renderEditPhotos(containerId, fotos, categoryKey) {
+            const container = document.getElementById(containerId);
+            if (!fotos || fotos.length === 0) {
+                container.innerHTML = '<span class="text-[11px] text-slate-400">Tidak ada foto</span>';
+                return;
+            }
+            container.innerHTML = fotos.map((f, idx) => `
+                <div class="relative inline-flex items-center gap-1 bg-white p-1 rounded border border-slate-200">
+                    <img src="${f.data || f.fileUrl}" class="w-10 h-10 object-cover rounded">
+                    <label class="flex flex-col items-center text-[10px] text-rose-600 font-medium cursor-pointer px-1" title="Centang untuk menghapus foto ini">
+                        <input type="checkbox" name="delete_${categoryKey}_photo" value="${idx}" class="w-3 h-3 text-rose-600 rounded focus:ring-rose-500">
+                        <span>Hapus</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        window.submitEditReport = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('editDocId').value;
+            const btn = document.getElementById('editSubmitBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Menyimpan...`;
+
+            try {
+                const docRef = doc(db, "sisa_makanan", id);
+                const docSnap = await getDoc(docRef);
+                let existingData = docSnap.exists() ? docSnap.data() : {};
+                const tgl = document.getElementById('editTanggal').value;
+
+                let fileIdsToDelete = [];
+
+                // Fungsi helper untuk memproses kategori saat edit (mempertahankan/menghapus foto lama & menambah foto baru)
+                async function processCategoryEdit(catKey, fileInputId, checkboxName) {
+                    let oldFotos = existingData[catKey]?.fotos || [];
+                    let keptFotos = [];
+                    let checkboxes = document.querySelectorAll(`input[name="${checkboxName}"]:checked`);
+                    let indexesToDelete = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+                    oldFotos.forEach((f, idx) => {
+                        if (indexesToDelete.includes(idx)) {
+                            if (f.fileId) fileIdsToDelete.push(f.fileId);
+                        } else {
+                            keptFotos.push(f);
+                        }
+                    });
+
+                    // Proses foto baru yang diunggah
+                    const newUploadedFotos = await processCategoryFiles(fileInputId, catKey, tgl, id);
+                    return [...keptFotos, ...newUploadedFotos];
+                }
+
+                const karboFotos = await processCategoryEdit('karbo', 'editKarboFoto', 'delete_karbo_photo');
+                const proteinFotos = await processCategoryEdit('protein', 'editProteinFoto', 'delete_protein_photo');
+                const sayurFotos = await processCategoryEdit('sayur', 'editSayurFoto', 'delete_sayur_photo');
+                const buahFotos = await processCategoryEdit('buah', 'editBuahFoto', 'delete_buah_photo');
+
+                // Hapus file terpilih di Google Drive melalui Apps Script
+                if (fileIdsToDelete.length > 0) {
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: "delete",
+                            fileIds: fileIdsToDelete
+                        })
+                    }).catch(err => console.log('Drive delete warning:', err));
+                }
+
+                const updatedData = {
+                    tanggal: tgl,
+                    karbo: { kg: document.getElementById('editKarboKg').value, ket: document.getElementById('editKarboKet').value, fotos: karboFotos },
+                    protein: { kg: document.getElementById('editProteinKg').value, ket: document.getElementById('editProteinKet').value, fotos: proteinFotos },
+                    sayur: { kg: document.getElementById('editSayurKg').value, ket: document.getElementById('editSayurKet').value, fotos: sayurFotos },
+                    buah: { kg: document.getElementById('editBuahKg').value, ket: document.getElementById('editBuahKet').value, fotos: buahFotos },
+                    totalKg: document.getElementById('editTotalKg').value
+                };
+
+                await updateDoc(docRef, updatedData);
+
+                showModalAlert('Berhasil', 'Laporan berhasil diperbarui!', 'success');
+                closeEditModal();
+                loadArchives();
+            } catch (err) {
+                console.error(err);
+                showModalAlert('Gagal', 'Gagal memperbarui data.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Simpan Perubahan`;
+            }
         }
 
         window.openPhotoModal = function(url) {
@@ -948,7 +1203,6 @@
             });
         }
 
-        /* FUNGSI HAPUS LAPORAN DAN FILE FOTO DI GOOGLE DRIVE */
         window.deleteRecord = async function(id) {
             showModalAlert('Konfirmasi Hapus', 'Hapus laporan ini secara permanen?', 'error', async () => {
                 try {
@@ -967,7 +1221,6 @@
                         });
                     }
 
-                    // Kirim perintah hapus ke Google Apps Script agar file di Google Drive terhapus
                     if (fileIdsToDelete.length > 0) {
                         await fetch(APPS_SCRIPT_URL, {
                             method: 'POST',
@@ -978,7 +1231,6 @@
                         }).catch(err => console.log('Drive delete warning:', err));
                     }
 
-                    // Hapus dokumen dari Firebase
                     await deleteDoc(docRef);
                     showModalAlert('Berhasil', 'Data laporan dan file berhasil dihapus.', 'success');
                     loadArchives();
