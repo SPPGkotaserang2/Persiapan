@@ -875,14 +875,12 @@
             }
 
             let photoHtml = '';
-            if (currentUser.role === 'admin') {
-                let photos = catData.fotos || [];
-                photoHtml = photos.length > 0 ? `<div class="flex flex-wrap gap-1 mt-1">` + photos.map(p => `
-                    <div class="inline-flex items-center gap-1 bg-slate-100 p-0.5 rounded border border-slate-200">
-                        <img src="${p.data || p.fileUrl}" onclick="openPhotoModal('${p.data || p.fileUrl}')" class="w-8 h-8 object-cover rounded cursor-pointer hover:opacity-80 transition" title="Klik untuk lihat foto">
-                    </div>
-                `).join('') + `</div>` : '';
-            }
+            let photos = catData.fotos || [];
+            photoHtml = photos.length > 0 ? `<div class="flex flex-wrap gap-1 mt-1">` + photos.map(p => `
+                <div class="inline-flex items-center gap-1 bg-slate-100 p-0.5 rounded border border-slate-200">
+                    <img src="${p.data || p.fileUrl}" onclick="openPhotoModal('${p.data || p.fileUrl}')" class="w-8 h-8 object-cover rounded cursor-pointer hover:opacity-80 transition" title="Klik untuk lihat foto">
+                </div>
+            `).join('') + `</div>` : '';
 
             return `
                 <div class="space-y-0.5">
@@ -995,7 +993,6 @@
 
                 let fileIdsToDelete = [];
 
-                // Fungsi helper untuk memproses kategori saat edit (mempertahankan/menghapus foto lama & menambah foto baru)
                 async function processCategoryEdit(catKey, fileInputId, checkboxName) {
                     let oldFotos = existingData[catKey]?.fotos || [];
                     let keptFotos = [];
@@ -1010,7 +1007,6 @@
                         }
                     });
 
-                    // Proses foto baru yang diunggah
                     const newUploadedFotos = await processCategoryFiles(fileInputId, catKey, tgl, id);
                     return [...keptFotos, ...newUploadedFotos];
                 }
@@ -1020,7 +1016,6 @@
                 const sayurFotos = await processCategoryEdit('sayur', 'editSayurFoto', 'delete_sayur_photo');
                 const buahFotos = await processCategoryEdit('buah', 'editBuahFoto', 'delete_buah_photo');
 
-                // Hapus file terpilih di Google Drive melalui Apps Script
                 if (fileIdsToDelete.length > 0) {
                     await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
